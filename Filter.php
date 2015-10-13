@@ -20,6 +20,11 @@ class Filter
     protected $layoutStrategy;
 
     /**
+     * @var bool
+     */
+    protected $autoRead = true;
+
+    /**
      * @var QueryManager
      */
     protected $queryManager;
@@ -31,13 +36,23 @@ class Filter
 
     /**
      * @param string $label
-     * @param string $value
      * @param string $name
+     * @param string $value
      * @param string $id
      * @return Item
      */
-    public function add($label, $value, $name, $id = '')
+    public function add($label, $name, $value = '', $id = '')
     {
+        if ($this->isAutoRead()) {
+            if (isset($_GET[$name])) {
+                $value = $_GET[$name];
+            }
+
+            if (isset($_POST[$name])) {
+                $value = $_POST[$name];
+            }
+        }
+
         return $this->items->add($label, $value, $name, $id);
     }
 
@@ -124,5 +139,21 @@ class Filter
     {
         $this->queryManager = $queryManager;
         $this->queryManager->setFilter($this);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAutoRead()
+    {
+        return $this->autoRead;
+    }
+
+    /**
+     * @param boolean $autoRead
+     */
+    public function setAutoRead($autoRead)
+    {
+        $this->autoRead = $autoRead;
     }
 }

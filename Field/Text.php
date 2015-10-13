@@ -1,5 +1,5 @@
 <?php
-namespace fhu\CrudFilter\Query;
+namespace fhu\CrudFilter\Field;
 
 use fhu\CrudFilter\Layout\AbstractField;
 

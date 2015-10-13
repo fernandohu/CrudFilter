@@ -4,18 +4,18 @@ namespace fhu\CrudFilter\Model;
 class Items
 {
     /**
-     * @var Item[]
+     * @var array
      */
-    protected $items;
+    protected $items = [];
 
     /**
      * @param string $label
-     * @param string $value
      * @param string $name
+     * @param string $value
      * @param string $id
      * @return Item
      */
-    public function add($label, $value, $name, $id = '')
+    public function add($label, $name, $value, $id = '')
     {
         if ($id == '') {
             $id = $name;

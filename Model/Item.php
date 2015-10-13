@@ -23,6 +23,11 @@ class Item
      */
     protected $queryStrategy;
 
+    public function __construct()
+    {
+        $this->config = new Config();
+    }
+
     /**
      * @param array $params
      * @return string
