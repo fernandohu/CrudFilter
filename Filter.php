@@ -78,7 +78,7 @@ class Filter
      */
     public function getItems()
     {
-        return $this->items;
+        return $this->items->getItems();
     }
 
     /**

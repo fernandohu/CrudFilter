@@ -34,6 +34,21 @@ class Config
     protected $help;
 
     /**
+     * @var string
+     */
+    protected $placeHolder = '';
+
+    /**
+     * @var int
+     */
+    protected $columnSize = 6;
+
+    /**
+     * @var int
+     */
+    protected $labelSize = 3;
+
+    /**
      * @return string
      */
     public function getId()
@@ -43,10 +58,13 @@ class Config
 
     /**
      * @param string $id
+     * @return Config
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -59,10 +77,13 @@ class Config
 
     /**
      * @param string $label
+     * @return Config
      */
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
     }
 
     /**
@@ -75,10 +96,13 @@ class Config
 
     /**
      * @param string $name
+     * @return Config
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -91,10 +115,13 @@ class Config
 
     /**
      * @param string $value
+     * @return Config
      */
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -107,10 +134,13 @@ class Config
 
     /**
      * @param string $dbField
+     * @return Config
      */
     public function setDbField($dbField)
     {
         $this->dbField = $dbField;
+
+        return $this;
     }
 
     /**
@@ -123,9 +153,69 @@ class Config
 
     /**
      * @param string $help
+     * @return Config
      */
     public function setHelp($help)
     {
         $this->help = $help;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getColumnSize()
+    {
+        return $this->columnSize;
+    }
+
+    /**
+     * @param int $columnSize
+     * @return Config
+     */
+    public function setColumnSize($columnSize)
+    {
+        $this->columnSize = $columnSize;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLabelSize()
+    {
+        return $this->labelSize;
+    }
+
+    /**
+     * @param int $labelSize
+     * @return Config
+     */
+    public function setLabelSize($labelSize)
+    {
+        $this->labelSize = $labelSize;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceHolder()
+    {
+        return $this->placeHolder;
+    }
+
+    /**
+     * @param string $placeHolder
+     * @return Config
+     */
+    public function setPlaceHolder($placeHolder)
+    {
+        $this->placeHolder = $placeHolder;
+
+        return $this;
     }
 }

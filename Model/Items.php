@@ -52,4 +52,12 @@ class Items
     {
         unset($this->items[$name]);
     }
+
+    /**
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
 }

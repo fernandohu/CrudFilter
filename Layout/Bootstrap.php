@@ -15,19 +15,20 @@ class Bootstrap extends AbstractLayout
         $legend = $this->getLegend();
 
         $html = '
-<form class="form-horizontal">
-    <fieldset>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"># Filtros #</h3>
+      </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <fieldset>
 ';
 
         if ($legend != '') {
-            $html = "
-        <legend>$legend</legend>
+            $html .= "
+                <legend>$legend</legend>
             ";
         }
-
-        $html .= '
-    <div class="form-group">
-';
 
         /**
          * @var Item $item
@@ -36,10 +37,22 @@ class Bootstrap extends AbstractLayout
             $html .= $this->renderItem($item);
         }
 
+        $labelSize = $item->config->getLabelSize();
+        $columnSize = $item->config->getColumnSize();
+
         $html .= '
+
+            <div class="form-group">
+              <label class="col-md-' . $labelSize . ' control-label" for="singlebutton"></label>
+              <div class="col-md-' . $columnSize . '">
+                <button id="singlebutton" name="singlebutton" class="btn btn-primary"># Submit #</button>
+              </div>
+            </div>
+
+            </fieldset>
+        </form>
     </div>
-    </fieldset>
-</form>
+</div>
 ';
 
         return $html;
@@ -65,7 +78,7 @@ class Bootstrap extends AbstractLayout
         }
 
         $params = [
-            'placeholder' => 'placeholder',
+            'placeholder' => $item->config->getPlaceHolder(),
             'class' => 'form-control input-md',
         ];
 
@@ -76,11 +89,16 @@ class Bootstrap extends AbstractLayout
 ';
         }
 
+        $labelSize = $item->config->getLabelSize();
+        $columnSize = $item->config->getColumnSize();
+
         $html = '
-        <label class="col-md-4 control-label" for="' . $id . '">' . $label . '</label>
-        <div class="col-md-4">
-            ' . $item->render($params) . $help . '
-        </div>
+                    <div class="form-group">
+                        <label class="col-md-' . $labelSize . ' control-label" for="' . $id . '">' . $label . '</label>
+                        <div class="col-md-' . $columnSize . '">
+                            ' . $item->render($params) . $help . '
+                        </div>
+                    </div>
 ';
         return $html;
     }

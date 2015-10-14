@@ -1,10 +1,10 @@
 <?php
 namespace fhu\CrudFilter\Model;
 
-use fhu\CrudFilter\Layout\AbstractField;
+use fhu\CrudFilter\Field\AbstractField;
 use fhu\CrudFilter\Query\AbstractQuery;
 use fhu\CrudFilter\Query\Equals;
-use fhu\CrudFilter\Query\Text;
+use fhu\CrudFilter\Field\Text;
 
 class Item
 {

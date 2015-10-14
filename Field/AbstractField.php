@@ -1,5 +1,5 @@
 <?php
-namespace fhu\CrudFilter\Layout;
+namespace fhu\CrudFilter\Field;
 
 use fhu\CrudFilter\Model\Item;
 

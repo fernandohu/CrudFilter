@@ -1,8 +1,6 @@
 <?php
 namespace fhu\CrudFilter\Field;
 
-use fhu\CrudFilter\Layout\AbstractField;
-
 class Text extends AbstractField
 {
     /**
