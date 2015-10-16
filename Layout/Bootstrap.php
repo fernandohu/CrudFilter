@@ -12,15 +12,19 @@ class Bootstrap extends AbstractLayout
      */
     public function render()
     {
-        $legend = $this->getLegend();
+        $title         = $this->getTitle();
+        $legend        = $this->getLegend();
+        $submitCaption = $this->getSubmitCaption();
+        $formAction    = $this->getFilter()->getFormAction();
+        $formMethod    = $this->getFilter()->getFormMethod();
 
         $html = '
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title"># Filtros #</h3>
+        <h3 class="panel-title">' . $title . '</h3>
       </div>
     <div class="panel-body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" method="' . $formMethod . '" action="' . htmlspecialchars($formAction) . '">
             <fieldset>
 ';
 
@@ -45,7 +49,7 @@ class Bootstrap extends AbstractLayout
             <div class="form-group">
               <label class="col-md-' . $labelSize . ' control-label" for="singlebutton"></label>
               <div class="col-md-' . $columnSize . '">
-                <button id="singlebutton" name="singlebutton" class="btn btn-primary"># Submit #</button>
+                <button id="submitbutton" class="btn btn-primary">' . $submitCaption . '</button>
               </div>
             </div>
 

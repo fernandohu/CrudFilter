@@ -11,11 +11,10 @@ class Items
     /**
      * @param string $label
      * @param string $name
-     * @param string $value
      * @param string $id
      * @return Item
      */
-    public function add($label, $name, $value, $id = '')
+    public function add($label, $name, $id = '')
     {
         if ($id == '') {
             $id = $name;
@@ -23,7 +22,6 @@ class Items
 
         $item = new Item();
         $item->config->setLabel($label);
-        $item->config->setValue($value);
         $item->config->setName($name);
         $item->config->setId($id);
 

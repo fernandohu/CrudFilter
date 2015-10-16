@@ -13,6 +13,7 @@ class Text extends AbstractField
 
         $params['name']  = $obj->getName();
         $params['value'] = $obj->getValue();
+        $params['id'] = $obj->getId();
 
         $paramsHtml = $this->renderParams($params);
 

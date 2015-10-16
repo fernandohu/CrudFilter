@@ -2,6 +2,7 @@
 namespace fhu\CrudFilter\Model;
 
 use fhu\CrudFilter\Field\AbstractField;
+use fhu\CrudFilter\BindType\AbstractBindType;
 use fhu\CrudFilter\Query\AbstractQuery;
 use fhu\CrudFilter\Query\Equals;
 use fhu\CrudFilter\Field\Text;
@@ -34,17 +35,19 @@ class Item
      */
     public function render(array $params)
     {
-        $this->getFieldStrategy()->setItem($this);
         return $this->getFieldStrategy()->render($params);
     }
 
     /**
+     * @param AbstractBindType $bindType
      * @return string
      */
-    public function assembleSql()
+    public function assembleSql(AbstractBindType $bindType)
     {
-        $this->getQueryStrategy()->setItem($this);
-        return $this->getQueryStrategy()->assemble();
+        $queryStrategy = $this->getQueryStrategy();
+        $queryStrategy->setBindType($bindType);
+
+        return $queryStrategy->assemble();
     }
 
     /**
@@ -55,6 +58,8 @@ class Item
         if (!$this->queryStrategy instanceof AbstractQuery) {
             $this->queryStrategy = new Equals();
         }
+
+        $this->queryStrategy->setItem($this);
 
         return $this->queryStrategy;
     }
@@ -78,6 +83,8 @@ class Item
         if (!$this->fieldStrategy instanceof AbstractField) {
             $this->fieldStrategy = new Text();
         }
+
+        $this->fieldStrategy->setItem($this);
 
         return $this->fieldStrategy;
     }

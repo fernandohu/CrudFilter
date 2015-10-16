@@ -9,10 +9,20 @@ class Like extends AbstractQuery
     public function assemble()
     {
         $dbField = $this->item->config->getDbField();
-        $value = mysql_escape_string($this->item->config->getValue());
+        $value = '%' . $this->item->config->getValue() . '%';
 
-        $sql = "`$dbField` LIKE '%" . $value . "%'";
+        $bindValue = $this->getBindType()->getSql($dbField, $value);
+
+        $sql = "{$dbField} LIKE {$bindValue}";
 
         return $sql;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return '%' . $this->item->config->getValue() . '%';
     }
 }

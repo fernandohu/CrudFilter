@@ -13,6 +13,16 @@ abstract class AbstractLayout
     /**
      * @var string
      */
+    protected $title = 'Filter';
+
+    /**
+     * @var string
+     */
+    protected $submitCaption = 'Submit';
+
+    /**
+     * @var string
+     */
     protected $legend;
 
     public abstract function render();
@@ -47,5 +57,37 @@ abstract class AbstractLayout
     public function setLegend($legend)
     {
         $this->legend = $legend;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubmitCaption()
+    {
+        return $this->submitCaption;
+    }
+
+    /**
+     * @param string $submitCaption
+     */
+    public function setSubmitCaption($submitCaption)
+    {
+        $this->submitCaption = $submitCaption;
     }
 }

@@ -4,6 +4,14 @@ namespace fhu\CrudFilter\Model;
 class Config
 {
     /**
+     * Constants for $dbType
+     */
+    const DB_TYPE_INTEGER = 'int';
+    const DB_TYPE_DOUBLE = 'double';
+    const DB_TYPE_STRING = 'string';
+    const DB_TYPE_BLOB = 'blob';
+
+    /**
      * @var string
      */
     protected $label;
@@ -27,6 +35,11 @@ class Config
      * @var string
      */
     protected $dbField;
+
+    /**
+     * @var string
+     */
+    protected $dbType;
 
     /**
      * @var string
@@ -110,6 +123,18 @@ class Config
      */
     public function getValue()
     {
+        $name = $this->getName();
+
+        if (is_null($this->value)) {
+            if (isset($_GET[$name]) && !empty($_GET[$name])) {
+                return $_GET[$name];
+            }
+
+            if (isset($_POST[$name]) && !empty($_POST[$name])) {
+                return $_POST[$name];
+            }
+        }
+
         return $this->value;
     }
 
@@ -129,6 +154,10 @@ class Config
      */
     public function getDbField()
     {
+        if ($this->dbField == '') {
+            return $this->name;
+        }
+
         return $this->dbField;
     }
 
@@ -217,5 +246,21 @@ class Config
         $this->placeHolder = $placeHolder;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDbType()
+    {
+        return $this->dbType;
+    }
+
+    /**
+     * @param string $dbType
+     */
+    public function setDbType($dbType)
+    {
+        $this->dbType = $dbType;
     }
 }

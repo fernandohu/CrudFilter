@@ -1,6 +1,7 @@
 <?php
 namespace fhu\CrudFilter\Query;
 
+use fhu\CrudFilter\BindType\AbstractBindType;
 use fhu\CrudFilter\Filter;
 use fhu\CrudFilter\Model\Item;
 
@@ -26,10 +27,33 @@ class QueryManager
                 $sql .= ' AND';
             }
             
-            $sql .= ' ' . $item->assembleSql();
+            $sql .= ' ' . $item->assembleSql($this->getFilter()->getBindType());
         }
 
         return $sql;
+    }
+
+    public function bind()
+    {
+        $params = [];
+
+        $bindType = $this->getFilter()->getBindType();
+
+        /**
+         * @var Item $item
+         */
+        foreach ($this->filter->getItems() as $item)  {
+            $queryStrategy = $item->getQueryStrategy();
+
+            $params[] = $bindType->getBind($item->config->getDbField(), $queryStrategy->getValue(), $item->config->getDbType());
+        }
+
+        $className = get_class($bindType);
+        if (method_exists($className, 'postProcessor')) {
+            return $className::{'postProcessor'}($params);
+        } else {
+            return AbstractBindType::postProcessor($params);
+        }
     }
 
     /**

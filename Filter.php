@@ -1,10 +1,12 @@
 <?php
 namespace fhu\CrudFilter;
 
+use fhu\CrudFilter\BindType\Pdo;
 use fhu\CrudFilter\Layout\AbstractLayout;
 use fhu\CrudFilter\Layout\Bootstrap;
 use fhu\CrudFilter\Model\Item;
 use fhu\CrudFilter\Model\Items;
+use fhu\CrudFilter\BindType\AbstractBindType;
 use fhu\CrudFilter\Query\QueryManager;
 
 class Filter
@@ -25,6 +27,21 @@ class Filter
     protected $autoRead = true;
 
     /**
+     * @var string
+     */
+    protected $formAction;
+
+    /**
+     * @var string
+     */
+    protected $formMethod = 'GET';
+
+    /**
+     * @var AbstractBindType
+     */
+    protected $bindType;
+
+    /**
      * @var QueryManager
      */
     protected $queryManager;
@@ -37,23 +54,12 @@ class Filter
     /**
      * @param string $label
      * @param string $name
-     * @param string $value
      * @param string $id
      * @return Item
      */
-    public function add($label, $name, $value = '', $id = '')
+    public function add($label, $name, $id = '')
     {
-        if ($this->isAutoRead()) {
-            if (isset($_GET[$name])) {
-                $value = $_GET[$name];
-            }
-
-            if (isset($_POST[$name])) {
-                $value = $_POST[$name];
-            }
-        }
-
-        return $this->items->add($label, $value, $name, $id);
+        return $this->items->add($label, $name, $id);
     }
 
     /**
@@ -95,6 +101,14 @@ class Filter
     public function assembleSql()
     {
         return $this->getQueryManager()->assemble();
+    }
+
+    /**
+     * @return string
+     */
+    public function bind()
+    {
+        return $this->getQueryManager()->bind();
     }
 
     /**
@@ -155,5 +169,57 @@ class Filter
     public function setAutoRead($autoRead)
     {
         $this->autoRead = $autoRead;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormAction()
+    {
+        return $this->formAction;
+    }
+
+    /**
+     * @param string $formAction
+     */
+    public function setFormAction($formAction)
+    {
+        $this->formAction = $formAction;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormMethod()
+    {
+        return $this->formMethod;
+    }
+
+    /**
+     * @param string $formMethod
+     */
+    public function setFormMethod($formMethod)
+    {
+        $this->formMethod = $formMethod;
+    }
+
+    /**
+     * @return AbstractBindType
+     */
+    public function getBindType()
+    {
+        if (!$this->bindType instanceof AbstractBindType) {
+            $this->bindType = new Pdo();
+        }
+
+        return $this->bindType;
+    }
+
+    /**
+     * @param AbstractBindType $bindType
+     */
+    public function setBindType($bindType)
+    {
+        $this->bindType = $bindType;
     }
 }
