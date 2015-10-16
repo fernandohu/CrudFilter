@@ -23,6 +23,10 @@ class QueryManager
          * @var Item $item
          */
         foreach ($this->filter->getItems() as $item)  {
+            if (is_null($item->config->getValue())) {
+                continue;
+            }
+
             if ($sql != '') {
                 $sql .= ' AND';
             }
@@ -43,6 +47,10 @@ class QueryManager
          * @var Item $item
          */
         foreach ($this->filter->getItems() as $item)  {
+            if (is_null($item->config->getValue())) {
+                continue;
+            }
+
             $queryStrategy = $item->getQueryStrategy();
 
             $params[] = $bindType->getBind($item->config->getDbField(), $queryStrategy->getValue(), $item->config->getDbType());
