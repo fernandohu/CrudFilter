@@ -9,3 +9,4 @@ The reason this library exist:
 # Main features
 * Automatic SQL generation: WHERE part only obviously, with or without parameter binding
 * Detection of request values: it can get values automatically from GET or POST
+* HTML generation: generated HTML tags and CSS classes are Twitter Bootstrap conforming 
