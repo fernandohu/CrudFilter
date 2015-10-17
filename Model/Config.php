@@ -126,11 +126,11 @@ class Config
         $name = $this->getName();
 
         if (is_null($this->value)) {
-            if (isset($_GET[$name]) && !empty($_GET[$name])) {
+            if (isset($_GET[$name]) && $_GET[$name] !== '') {
                 return $_GET[$name];
             }
 
-            if (isset($_POST[$name]) && !empty($_POST[$name])) {
+            if (isset($_POST[$name]) && $_POST[$name] !== '') {
                 return $_POST[$name];
             }
         }

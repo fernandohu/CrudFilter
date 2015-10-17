@@ -50,6 +50,7 @@ class Bootstrap extends AbstractLayout
               <label class="col-md-' . $labelSize . ' control-label" for="singlebutton"></label>
               <div class="col-md-' . $columnSize . '">
                 <button id="submitbutton" class="btn btn-primary">' . $submitCaption . '</button>
+                <button class="btn btn-danger" type="reset">Reset</button>
               </div>
             </div>
 
