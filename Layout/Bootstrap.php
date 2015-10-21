@@ -76,14 +76,28 @@ class Bootstrap extends AbstractLayout
 
     protected function panelBegin()
     {
-        $title         = $this->getTitle();
-        $legend        = $this->getLegend();
-        $formAction    = $this->getFilter()->getForm()->getFormAction();
-        $formMethod    = $this->getFilter()->getForm()->getFormMethod();
+        $id             = $this->filter->getId();
+        $title          = $this->getTitle();
+        $legend         = $this->getLegend();
+        $minimizeButton = $this->isEnableMinimizeButton();
+        $minimizeHint   = $this->getMinimizeHint();
+        $formAction     = $this->getFilter()->getForm()->getFormAction();
+        $formMethod     = $this->getFilter()->getForm()->getFormMethod();
 
         $html = '
-<div class="panel panel-default">
+<div class="panel panel-default" id="' . $id . '">
     <div class="panel-heading">
+';
+
+        if ($minimizeButton) {
+            $minimizeLink = 'javascript:document.getElementById(\'' . $id . '\').style.display = \'none\';';
+            $minimizeLink .= $this->getMinimizeJs();
+            $html .= '
+        <div style="float:right; cursor:pointer;" class="glyphicon glyphicon-resize-small" onclick="' . $minimizeLink . '" title="' . htmlspecialchars($minimizeHint) . '"></div>
+';
+        }
+
+        $html .= '
         <h3 class="panel-title">' . $title . '</h3>
       </div>
     <div class="panel-body">

@@ -42,8 +42,19 @@ class Filter
      */
     protected $queryManager;
 
+    /**
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * @var int
+     */
+    static private $filterNumber = 0;
+
     public function __construct()
     {
+        $this->id = 'crud_filter_' . ++self::$filterNumber;
         $this->items = new ItemManager($this);
     }
 
@@ -210,5 +221,21 @@ class Filter
     public function setForm($form)
     {
         $this->form = $form;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

@@ -25,6 +25,21 @@ abstract class AbstractLayout
      */
     protected $legend;
 
+    /**
+     * @var bool
+     */
+    protected $enableMinimizeButton = false;
+
+    /**
+     * @var string
+     */
+    protected $minimizeHint = '';
+
+    /**
+     * @var string
+     */
+    protected $minimizeJs = '';
+
     public abstract function render();
 
     /**
@@ -101,5 +116,65 @@ abstract class AbstractLayout
         $this->submitCaption = $submitCaption;
 
         return $this;
+    }
+
+    /**
+     * @return boolean
+     *
+     */
+    public function isEnableMinimizeButton()
+    {
+        return $this->enableMinimizeButton;
+    }
+
+    /**
+     * @param boolean $enableMinimizeButton
+     * @return $this
+     */
+    public function setEnableMinimizeButton($enableMinimizeButton)
+    {
+        $this->enableMinimizeButton = $enableMinimizeButton;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinimizeHint()
+    {
+        return $this->minimizeHint;
+    }
+
+    /**
+     * @param string $minimizeHint
+     */
+    public function setMinimizeHint($minimizeHint)
+    {
+        $this->minimizeHint = $minimizeHint;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinimizeJs()
+    {
+        return $this->minimizeJs;
+    }
+
+    /**
+     * @param string $minimizeJs
+     */
+    public function setMinimizeJs($minimizeJs)
+    {
+        $this->minimizeJs = $minimizeJs;
+    }
+
+    public function getMaximizeJs()
+    {
+        $id = $this->getFilter()->getId();
+        $js = 'document.getElementById(\'' . $id . '\').style.display = \'block\';';
+
+        return $js;
     }
 }
