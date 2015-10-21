@@ -1,7 +1,7 @@
 <?php
-namespace fhu\CrudFilter\Query;
+namespace fhu\CrudFilter\Service;
 
-use fhu\CrudFilter\BindType\AbstractBindType;
+use fhu\CrudFilter\Model\BindType\AbstractBindType;
 use fhu\CrudFilter\Filter;
 use fhu\CrudFilter\Model\Item;
 
@@ -19,11 +19,13 @@ class QueryManager
     {
         $sql = '';
 
+        $filter = $this->getFilter();
+
         /**
          * @var Item $item
          */
-        foreach ($this->filter->getItems() as $item)  {
-            if (is_null($item->config->getValue())) {
+        foreach ($filter->getFields() as $item)  {
+            if (is_null($item->getConfig()->getValue())) {
                 continue;
             }
 
@@ -31,7 +33,7 @@ class QueryManager
                 $sql .= ' AND';
             }
             
-            $sql .= ' ' . $item->assembleSql($this->getFilter()->getBindType());
+            $sql .= ' ' . $item->assembleSql($filter->getBindType());
         }
 
         return $sql;
@@ -46,14 +48,14 @@ class QueryManager
         /**
          * @var Item $item
          */
-        foreach ($this->filter->getItems() as $item)  {
-            if (is_null($item->config->getValue())) {
+        foreach ($this->filter->getFields() as $item)  {
+            if (is_null($item->getConfig()->getValue())) {
                 continue;
             }
 
             $queryStrategy = $item->getQueryStrategy();
 
-            $params[] = $bindType->getBind($item->config->getDbField(), $queryStrategy->getValue(), $item->config->getDbType());
+            $params[] = $bindType->getBind($item->getConfig()->getDbField(), $queryStrategy->getValue(), $item->getConfig()->getDbType());
         }
 
         $className = get_class($bindType);

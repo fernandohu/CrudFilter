@@ -1,5 +1,5 @@
 <?php
-namespace fhu\CrudFilter\Field;
+namespace fhu\CrudFilter\Model\Field;
 
 class Text extends AbstractField
 {
@@ -9,7 +9,7 @@ class Text extends AbstractField
      */
     public function render(array $params)
     {
-        $obj = $this->item->config;
+        $obj = $this->item->getConfig();
 
         $params['name']  = $obj->getName();
         $params['value'] = $obj->getValue();

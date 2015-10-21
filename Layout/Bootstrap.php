@@ -12,11 +12,74 @@ class Bootstrap extends AbstractLayout
      */
     public function render()
     {
+        $html = $this->panelBegin();
+
+        /**
+         * @var Item $item
+         */
+        foreach ($this->filter->getFields() as $item) {
+            $html .= $this->renderItem($item);
+        }
+
+        $labelSize = isset($item) ? $item->getConfig()->getLabelSize() : 1;
+        $columnSize = isset($item) ? $item->getConfig()->getColumnSize() : 1;
+
+        $html .= $this->panelEnd($labelSize, $columnSize);
+
+        return $html;
+    }
+
+    /**
+     * @param Item $item
+     * @return string
+     * @throws IdNotFoundException
+     * @throws LabelNotFoundException
+     */
+    protected function renderItem(Item $item)
+    {
+        $id    = $item->getConfig()->getId();
+        $label = $item->getConfig()->getLabel();
+
+        if (empty($id)) {
+            throw new IdNotFoundException();
+        }
+
+        if (empty($label)) {
+            throw new LabelNotFoundException();
+        }
+
+        $params = [
+            'placeholder' => $item->getConfig()->getPlaceHolder(),
+            'class' => 'form-control input-md',
+        ];
+
+        $help = '';
+        if ($item->getConfig()->getHelp() != '') {
+            $help = '
+            <span class="help-block">' . $item->getConfig()->getHelp() . '</span>
+';
+        }
+
+        $labelSize = $item->getConfig()->getLabelSize();
+        $columnSize = $item->getConfig()->getColumnSize();
+
+        $html = '
+                    <div class="form-group">
+                        <label class="col-md-' . $labelSize . ' control-label" for="' . $id . '">' . $label . '</label>
+                        <div class="col-md-' . $columnSize . '">
+                            ' . $item->render($params) . $help . '
+                        </div>
+                    </div>
+';
+        return $html;
+    }
+
+    protected function panelBegin()
+    {
         $title         = $this->getTitle();
         $legend        = $this->getLegend();
-        $submitCaption = $this->getSubmitCaption();
-        $formAction    = $this->getFilter()->getFormAction();
-        $formMethod    = $this->getFilter()->getFormMethod();
+        $formAction    = $this->getFilter()->getForm()->getFormAction();
+        $formMethod    = $this->getFilter()->getForm()->getFormMethod();
 
         $html = '
 <div class="panel panel-default">
@@ -34,17 +97,14 @@ class Bootstrap extends AbstractLayout
             ";
         }
 
-        /**
-         * @var Item $item
-         */
-        foreach ($this->filter->getItems() as $item) {
-            $html .= $this->renderItem($item);
-        }
+        return $html;
+    }
 
-        $labelSize = $item->config->getLabelSize();
-        $columnSize = $item->config->getColumnSize();
+    protected function panelEnd($labelSize, $columnSize)
+    {
+        $submitCaption = $this->getSubmitCaption();
 
-        $html .= '
+        $html = '
 
             <div class="form-group">
               <label class="col-md-' . $labelSize . ' control-label" for="singlebutton"></label>
@@ -58,52 +118,6 @@ class Bootstrap extends AbstractLayout
         </form>
     </div>
 </div>
-';
-
-        return $html;
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     * @throws IdNotFoundException
-     * @throws LabelNotFoundException
-     */
-    protected function renderItem(Item $item)
-    {
-        $id = $item->config->getId();
-        $label = $item->config->getLabel();
-
-        if (empty($id)) {
-            throw new IdNotFoundException();
-        }
-
-        if (empty($label)) {
-            throw new LabelNotFoundException();
-        }
-
-        $params = [
-            'placeholder' => $item->config->getPlaceHolder(),
-            'class' => 'form-control input-md',
-        ];
-
-        $help = '';
-        if ($item->config->getHelp() != '') {
-            $help = '
-            <span class="help-block">' . $item->config->getHelp() . '</span>
-';
-        }
-
-        $labelSize = $item->config->getLabelSize();
-        $columnSize = $item->config->getColumnSize();
-
-        $html = '
-                    <div class="form-group">
-                        <label class="col-md-' . $labelSize . ' control-label" for="' . $id . '">' . $label . '</label>
-                        <div class="col-md-' . $columnSize . '">
-                            ' . $item->render($params) . $help . '
-                        </div>
-                    </div>
 ';
         return $html;
     }

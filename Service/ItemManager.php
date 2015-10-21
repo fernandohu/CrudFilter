@@ -1,12 +1,25 @@
 <?php
-namespace fhu\CrudFilter\Model;
+namespace fhu\CrudFilter\Service;
 
-class Items
+use fhu\CrudFilter\Filter;
+use fhu\CrudFilter\Model\Item;
+
+class ItemManager
 {
     /**
      * @var array
      */
     protected $items = [];
+
+    /**
+     * @var Filter
+     */
+    protected $filter;
+
+    public function __construct(Filter $filter)
+    {
+        $this->filter = $filter;
+    }
 
     /**
      * @param string $label
@@ -20,10 +33,11 @@ class Items
             $id = $name;
         }
 
-        $item = new Item();
-        $item->config->setLabel($label);
-        $item->config->setName($name);
-        $item->config->setId($id);
+        $item = new Item($this->filter);
+        $item->getConfig()
+            ->setLabel($label)
+            ->setName($name)
+            ->setId($id);
 
         $this->items[$name] = $item;
 
@@ -57,5 +71,13 @@ class Items
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @return Filter
+     */
+    public function getFilter()
+    {
+        return $this->filter;
     }
 }

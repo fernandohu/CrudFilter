@@ -37,10 +37,13 @@ abstract class AbstractLayout
 
     /**
      * @param Filter $filter
+     * @return $this
      */
     public function setFilter($filter)
     {
         $this->filter = $filter;
+
+        return $this;
     }
 
     /**
@@ -52,11 +55,14 @@ abstract class AbstractLayout
     }
 
     /**
-     * @param string $legend
+     * @param $legend
+     * @return $this
      */
     public function setLegend($legend)
     {
         $this->legend = $legend;
+
+        return $this;
     }
 
     /**
@@ -68,11 +74,14 @@ abstract class AbstractLayout
     }
 
     /**
-     * @param string $title
+     * @param $title
+     * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -84,10 +93,13 @@ abstract class AbstractLayout
     }
 
     /**
-     * @param string $submitCaption
+     * @param $submitCaption
+     * @return $this
      */
     public function setSubmitCaption($submitCaption)
     {
         $this->submitCaption = $submitCaption;
+
+        return $this;
     }
 }

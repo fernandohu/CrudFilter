@@ -1,18 +1,19 @@
 <?php
 namespace fhu\CrudFilter;
 
-use fhu\CrudFilter\BindType\Pdo;
+use fhu\CrudFilter\Model\BindType\Pdo;
 use fhu\CrudFilter\Layout\AbstractLayout;
 use fhu\CrudFilter\Layout\Bootstrap;
+use fhu\CrudFilter\Model\Form;
 use fhu\CrudFilter\Model\Item;
-use fhu\CrudFilter\Model\Items;
-use fhu\CrudFilter\BindType\AbstractBindType;
-use fhu\CrudFilter\Query\QueryManager;
+use fhu\CrudFilter\Service\ItemManager;
+use fhu\CrudFilter\Model\BindType\AbstractBindType;
+use fhu\CrudFilter\Service\QueryManager;
 
 class Filter
 {
     /**
-     * @var Items
+     * @var ItemManager
      */
     protected $items;
 
@@ -27,19 +28,14 @@ class Filter
     protected $autoRead = true;
 
     /**
-     * @var string
-     */
-    protected $formAction;
-
-    /**
-     * @var string
-     */
-    protected $formMethod = 'GET';
-
-    /**
      * @var AbstractBindType
      */
     protected $bindType;
+
+    /**
+     * @var Form
+     */
+    protected $form;
 
     /**
      * @var QueryManager
@@ -48,7 +44,7 @@ class Filter
 
     public function __construct()
     {
-        $this->items = new Items();
+        $this->items = new ItemManager($this);
     }
 
     /**
@@ -57,7 +53,7 @@ class Filter
      * @param string $id
      * @return Item
      */
-    public function add($label, $name, $id = '')
+    public function addField($label, $name, $id = '')
     {
         return $this->items->add($label, $name, $id);
     }
@@ -66,7 +62,7 @@ class Filter
      * @param $name
      * @return Item|null
      */
-    public function get($name)
+    public function getField($name)
     {
         return $this->items->get($name);
     }
@@ -74,15 +70,15 @@ class Filter
     /**
      * @param $name
      */
-    public function remove($name)
+    public function removeField($name)
     {
         $this->items->remove($name);
     }
 
     /**
-     * @return Items
+     * @return ItemManager
      */
-    public function getItems()
+    public function getFields()
     {
         return $this->items->getItems();
     }
@@ -96,6 +92,8 @@ class Filter
     }
 
     /**
+     * This method will return the SQL used to filter a listing query.
+     *
      * @return string
      */
     public function assembleSql()
@@ -104,9 +102,12 @@ class Filter
     }
 
     /**
+     * This method will return an array with bind information that is prepared to be passed to
+     * the chosen bind type.
+     *
      * @return string
      */
-    public function bind()
+    public function assembleBind()
     {
         return $this->getQueryManager()->bind();
     }
@@ -172,38 +173,6 @@ class Filter
     }
 
     /**
-     * @return string
-     */
-    public function getFormAction()
-    {
-        return $this->formAction;
-    }
-
-    /**
-     * @param string $formAction
-     */
-    public function setFormAction($formAction)
-    {
-        $this->formAction = $formAction;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFormMethod()
-    {
-        return $this->formMethod;
-    }
-
-    /**
-     * @param string $formMethod
-     */
-    public function setFormMethod($formMethod)
-    {
-        $this->formMethod = $formMethod;
-    }
-
-    /**
      * @return AbstractBindType
      */
     public function getBindType()
@@ -221,5 +190,25 @@ class Filter
     public function setBindType($bindType)
     {
         $this->bindType = $bindType;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getForm()
+    {
+        if (!$this->form instanceof Form) {
+            $this->form = new Form();
+        }
+
+        return $this->form;
+    }
+
+    /**
+     * @param Form $form
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
     }
 }

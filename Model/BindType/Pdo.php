@@ -1,7 +1,7 @@
 <?php
-namespace fhu\CrudFilter\BindType;
+namespace fhu\CrudFilter\Model\BindType;
 
-class Phalcon extends AbstractBindType
+class Pdo extends AbstractBindType
 {
     /**
      * @param string $name
@@ -10,7 +10,7 @@ class Phalcon extends AbstractBindType
      */
     public function getSql($name, $value)
     {
-        return ":{$name}:";
+        return ":{$name}";
     }
 
     /**

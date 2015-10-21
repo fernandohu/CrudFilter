@@ -1,5 +1,5 @@
 <?php
-namespace fhu\CrudFilter\BindType;
+namespace fhu\CrudFilter\Model\BindType;
 
 abstract class AbstractBindType
 {

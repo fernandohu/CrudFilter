@@ -1,6 +1,8 @@
 <?php
 namespace fhu\CrudFilter\Model;
 
+use fhu\CrudFilter\Filter;
+
 class Config
 {
     /**
@@ -60,6 +62,16 @@ class Config
      * @var int
      */
     protected $labelSize = 3;
+
+    /**
+     * @var Filter
+     */
+    protected $filter;
+
+    public function __construct(Filter $filter)
+    {
+        $this->filter = $filter;
+    }
 
     /**
      * @return string
@@ -125,13 +137,13 @@ class Config
     {
         $name = $this->getName();
 
-        if (is_null($this->value)) {
-            if (isset($_GET[$name]) && $_GET[$name] !== '') {
-                return $_GET[$name];
-            }
-
+        if ($this->filter->isAutoRead() && is_null($this->value)) {
             if (isset($_POST[$name]) && $_POST[$name] !== '') {
                 return $_POST[$name];
+            }
+
+            if (isset($_GET[$name]) && $_GET[$name] !== '') {
+                return $_GET[$name];
             }
         }
 
@@ -262,5 +274,13 @@ class Config
     public function setDbType($dbType)
     {
         $this->dbType = $dbType;
+    }
+
+    /**
+     * @return Filter
+     */
+    public function getFilter()
+    {
+        return $this->filter;
     }
 }

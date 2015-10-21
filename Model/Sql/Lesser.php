@@ -1,15 +1,15 @@
 <?php
-namespace fhu\CrudFilter\Query;
+namespace fhu\CrudFilter\Model\Sql;
 
-class Lesser extends AbstractQuery
+class Lesser extends AbstractSql
 {
     /**
      * @return string
      */
     public function assemble()
     {
-        $dbField = $this->item->config->getDbField();
-        $value = $this->item->config->getValue();
+        $dbField = $this->item->getConfig()->getDbField();
+        $value = $this->item->getConfig()->getValue();
 
         $bindValue = $this->getBindType()->getSql($dbField, $value);
 

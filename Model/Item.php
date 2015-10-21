@@ -1,18 +1,19 @@
 <?php
 namespace fhu\CrudFilter\Model;
 
-use fhu\CrudFilter\Field\AbstractField;
-use fhu\CrudFilter\BindType\AbstractBindType;
-use fhu\CrudFilter\Query\AbstractQuery;
-use fhu\CrudFilter\Query\Equals;
-use fhu\CrudFilter\Field\Text;
+use fhu\CrudFilter\Model\Field\AbstractField;
+use fhu\CrudFilter\Model\BindType\AbstractBindType;
+use fhu\CrudFilter\Filter;
+use fhu\CrudFilter\Model\Sql\AbstractSql;
+use fhu\CrudFilter\Model\Sql\Equals;
+use fhu\CrudFilter\Model\Field\Text;
 
 class Item
 {
     /**
      * @var Config
      */
-    public $config;
+    protected $config;
 
     /**
      * @var AbstractField
@@ -20,13 +21,19 @@ class Item
     protected $fieldStrategy;
 
     /**
-     * @var AbstractQuery
+     * @var AbstractSql
      */
     protected $queryStrategy;
 
-    public function __construct()
+    /**
+     * @var Filter
+     */
+    protected $filter;
+
+    public function __construct(Filter $filter)
     {
-        $this->config = new Config();
+        $this->config = new Config($filter);
+        $this->filter = $filter;
     }
 
     /**
@@ -51,26 +58,26 @@ class Item
     }
 
     /**
-     * @return AbstractQuery
+     * @return AbstractSql
      */
     public function getQueryStrategy()
     {
-        if (!$this->queryStrategy instanceof AbstractQuery) {
+        if (!$this->queryStrategy instanceof AbstractSql) {
             $this->queryStrategy = new Equals();
+            $this->queryStrategy->setItem($this);
         }
-
-        $this->queryStrategy->setItem($this);
 
         return $this->queryStrategy;
     }
 
     /**
-     * @param AbstractQuery $queryStrategy
+     * @param AbstractSql $queryStrategy
      * @return Item
      */
     public function setQueryStrategy($queryStrategy)
     {
         $this->queryStrategy = $queryStrategy;
+        $this->queryStrategy->setItem($this);
 
         return $this;
     }
@@ -82,9 +89,8 @@ class Item
     {
         if (!$this->fieldStrategy instanceof AbstractField) {
             $this->fieldStrategy = new Text();
+            $this->fieldStrategy->setItem($this);
         }
-
-        $this->fieldStrategy->setItem($this);
 
         return $this->fieldStrategy;
     }
@@ -96,7 +102,24 @@ class Item
     public function setFieldStrategy($fieldStrategy)
     {
         $this->fieldStrategy = $fieldStrategy;
+        $this->fieldStrategy->setItem($this);
 
         return $this;
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @return Filter
+     */
+    public function getFilter()
+    {
+        return $this->filter;
     }
 }

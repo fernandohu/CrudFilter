@@ -1,5 +1,5 @@
 <?php
-namespace fhu\CrudFilter\Field;
+namespace fhu\CrudFilter\Model\Field;
 
 class Select extends AbstractSelect
 {
@@ -9,7 +9,7 @@ class Select extends AbstractSelect
      */
     public function render(array $params)
     {
-        $obj = $this->item->config;
+        $obj = $this->item->getConfig();
 
         $value = $obj->getValue();
 

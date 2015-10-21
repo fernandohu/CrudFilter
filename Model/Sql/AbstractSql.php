@@ -1,10 +1,10 @@
 <?php
-namespace fhu\CrudFilter\Query;
+namespace fhu\CrudFilter\Model\Sql;
 
-use fhu\CrudFilter\BindType\AbstractBindType;
+use fhu\CrudFilter\Model\BindType\AbstractBindType;
 use fhu\CrudFilter\Model\Item;
 
-abstract class AbstractQuery
+abstract class AbstractSql
 {
     /**
      * @var Item
@@ -58,6 +58,6 @@ abstract class AbstractQuery
      */
     public function getValue()
     {
-        return $this->getItem()->config->getValue();
+        return $this->getItem()->getConfig()->getValue();
     }
 }

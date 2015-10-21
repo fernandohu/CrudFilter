@@ -1,7 +1,7 @@
 <?php
-namespace fhu\CrudFilter\BindType;
+namespace fhu\CrudFilter\Model\BindType;
 
-class Direct extends AbstractBindType
+class Phalcon extends AbstractBindType
 {
     /**
      * @param string $name
@@ -10,7 +10,7 @@ class Direct extends AbstractBindType
      */
     public function getSql($name, $value)
     {
-        return "'{$value}'";
+        return ":{$name}:";
     }
 
     /**
@@ -21,15 +21,9 @@ class Direct extends AbstractBindType
      */
     public function getBind($name, $value, $type)
     {
-        return [];
+        return [
+            $name => $value
+        ];
     }
 
-    /**
-     * @param array $params
-     * @return array
-     */
-    public static function postProcessor(array $params)
-    {
-        return null;
-    }
 }

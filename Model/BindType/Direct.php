@@ -1,7 +1,7 @@
 <?php
-namespace fhu\CrudFilter\BindType;
+namespace fhu\CrudFilter\Model\BindType;
 
-class MysqlEscape extends AbstractBindType
+class Direct extends AbstractBindType
 {
     /**
      * @param string $name
@@ -10,8 +10,6 @@ class MysqlEscape extends AbstractBindType
      */
     public function getSql($name, $value)
     {
-        $value = mysql_escape_string($value);
-
         return "'{$value}'";
     }
 
@@ -23,7 +21,7 @@ class MysqlEscape extends AbstractBindType
      */
     public function getBind($name, $value, $type)
     {
-        return false;
+        return [];
     }
 
     /**
