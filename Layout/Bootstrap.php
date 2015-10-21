@@ -83,15 +83,15 @@ class Bootstrap extends AbstractLayout
         $minimizeHint   = $this->getMinimizeHint();
         $formAction     = $this->getFilter()->getForm()->getFormAction();
         $formMethod     = $this->getFilter()->getForm()->getFormMethod();
+        $display        = $this->getDisplay();
 
         $html = '
-<div class="panel panel-default" id="' . $id . '">
+<div class="panel panel-default" id="' . $id . '" style="display:' . $display . '">
     <div class="panel-heading">
 ';
 
         if ($minimizeButton) {
-            $minimizeLink = 'javascript:document.getElementById(\'' . $id . '\').style.display = \'none\';';
-            $minimizeLink .= $this->getMinimizeJs();
+            $minimizeLink = $this->getMinimizeJs(true);
             $html .= '
         <div style="float:right; cursor:pointer;" class="glyphicon glyphicon-resize-small" onclick="' . $minimizeLink . '" title="' . htmlspecialchars($minimizeHint) . '"></div>
 ';

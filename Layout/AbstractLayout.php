@@ -36,9 +36,19 @@ abstract class AbstractLayout
     protected $minimizeHint = '';
 
     /**
+     * @var bool
+     */
+    protected $keepMinimized = false;
+
+    /**
      * @var string
      */
     protected $minimizeJs = '';
+
+    /**
+     * @var string
+     */
+    protected $cookiePrefix = '';
 
     public abstract function render();
 
@@ -155,10 +165,22 @@ abstract class AbstractLayout
     }
 
     /**
+     * @param bool $all
      * @return string
      */
-    public function getMinimizeJs()
+    public function getMinimizeJs($all = false)
     {
+        if ($all) {
+            $id = $this->getFilter()->getId();
+
+            $minimizeLink = 'javascript:document.getElementById(\'' . $id . '\').style.display = \'none\';';
+            if ($this->isKeepMinimized()) {
+                $minimizeLink .= '$.cookie(\'' . $this->cookiePrefix . $id . ':visible\', \'no\');';
+            }
+
+            return $minimizeLink . $this->minimizeJs;
+        }
+
         return $this->minimizeJs;
     }
 
@@ -175,6 +197,54 @@ abstract class AbstractLayout
         $id = $this->getFilter()->getId();
         $js = 'document.getElementById(\'' . $id . '\').style.display = \'block\';';
 
+        if ($this->isKeepMinimized()) {
+            $js .= '$.cookie(\'' . $this->cookiePrefix . $id . ':visible\', \'yes\');';
+        }
+
         return $js;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isKeepMinimized()
+    {
+        return $this->keepMinimized;
+    }
+
+    /**
+     * Keep minimized between requests. Cookies will be used to transport information between
+     * requests.
+     *
+     * @param boolean $keepMinimized
+     * @param string $cookiePrefix
+     */
+    public function setKeepMinimized($keepMinimized, $cookiePrefix = 'crudfilter:')
+    {
+        $this->keepMinimized = $keepMinimized;
+        $this->cookiePrefix = $cookiePrefix;
+    }
+
+    /**
+     * Returns display 'none' of 'block' according to cookie value.
+     *
+     * @return string
+     */
+    public function getDisplay()
+    {
+        if ($this->isKeepMinimized()) {
+            $id = $this->getFilter()->getId();
+            $cookieName = $this->cookiePrefix . $id . ':visible';
+
+            if (isset($_COOKIE[$cookieName])) {
+                if ($_COOKIE[$cookieName] == 'yes') {
+                    return 'block';
+                }
+            }
+
+            return 'none';
+        }
+
+        return 'block';
     }
 }
